@@ -1,0 +1,15 @@
+{
+  "watch": ["server.js", "config.js"],
+  "ext": "js",
+  "ignore": ["node_modules", "dist", "src"],
+  "exec": "node server.js",
+  "env": {
+    "NODE_ENV": "development"
+  }
+}
+
+
+
+
+
+

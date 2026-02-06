@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Test Page - Alibaba Cloud OSS</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .test-section {
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .test-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .test-result.pass {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .test-result.fail {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .test-button {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #218838;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧪 UI Test Page</h1>
+            <p class="subtitle">Test UI Components and Functions</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Utility Functions Tests -->
+            <section class="test-section">
+                <h3>Utility Functions Tests</h3>
+                <div id="utilityTests"></div>
+                <button class="test-button" onclick="runUtilityTests()">Run Utility Tests</button>
+            </section>
+
+            <!-- DOM Elements Tests -->
+            <section class="test-section">
+                <h3>DOM Elements Tests</h3>
+                <div id="domTests"></div>
+                <button class="test-button" onclick="runDOMTests()">Run DOM Tests</button>
+            </section>
+
+            <!-- File Format Tests -->
+            <section class="test-section">
+                <h3>File Format Tests</h3>
+                <div id="formatTests"></div>
+                <button class="test-button" onclick="runFormatTests()">Run Format Tests</button>
+            </section>
+
+            <!-- Mock API Tests -->
+            <section class="test-section">
+                <h3>Mock API Tests</h3>
+                <div id="apiTests"></div>
+                <button class="test-button" onclick="runAPITests()">Run API Tests</button>
+            </section>
+
+            <!-- Interactive UI Test -->
+            <section class="test-section">
+                <h3>Interactive UI Test</h3>
+                <p>Test the actual UI components:</p>
+                <div class="test-grid">
+                    <div>
+                        <h4>Upload Section</h4>
+                        <div class="form-group">
+                            <label for="testFolderInput">Folder Path:</label>
+                            <input type="text" id="testFolderInput" placeholder="e.g., test-folder" value="test-uploads">
+                        </div>
+                        <div class="form-group">
+                            <label for="testFileInput">Select File:</label>
+                            <input type="file" id="testFileInput" class="file-input">
+                        </div>
+                        <button id="testUploadBtn" class="btn btn-primary">Test Upload</button>
+                        <div id="testUploadStatus" class="status-message"></div>
+                    </div>
+                    <div>
+                        <h4>File Browser Test</h4>
+                        <div class="form-group">
+                            <label for="testFolderFilter">Filter by Folder:</label>
+                            <input type="text" id="testFolderFilter" placeholder="e.g., uploads" value="uploads">
+                        </div>
+                        <button id="testRefreshBtn" class="btn btn-secondary">Test Refresh</button>
+                        <div id="testFileList" class="file-list" style="max-height: 300px; margin-top: 10px;">
+                            <div class="empty">Click "Test Refresh" to load files</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Run All Tests -->
+            <section class="test-section">
+                <h3>Run All Tests</h3>
+                <button class="test-button" onclick="runAllTests()" style="background: #667eea; font-size: 1.1em; padding: 15px 30px;">
+                    🚀 Run All Tests
+                </button>
+                <div id="allTestsResults"></div>
+            </section>
+        </div>
+    </div>
+
+    <script src="utils.js"></script>
+    <script>
+        // Test results container
+        function addTestResult(containerId, testName, passed, message) {
+            const container = document.getElementById(containerId);
+            const result = document.createElement('div');
+            result.className = `test-result ${passed ? 'pass' : 'fail'}`;
+            result.textContent = `${passed ? '✓' : '✗'} ${testName}: ${message}`;
+            container.appendChild(result);
+        }
+
+        function clearTestResults(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+
+        // Utility Functions Tests
+        function runUtilityTests() {
+            clearTestResults('utilityTests');
+            const { formatFileSize, formatDate } = window.utils || { formatFileSize, formatDate };
+
+            // Test formatFileSize
+            addTestResult('utilityTests', 'formatFileSize(0)', formatFileSize(0) === '0 Bytes', formatFileSize(0));
+            addTestResult('utilityTests', 'formatFileSize(1024)', formatFileSize(1024) === '1 KB', formatFileSize(1024));
+            addTestResult('utilityTests', 'formatFileSize(1048576)', formatFileSize(1048576) === '1 MB', formatFileSize(1048576));
+            addTestResult('utilityTests', 'formatFileSize(500)', formatFileSize(500).includes('Bytes'), formatFileSize(500));
+
+            // Test formatDate
+            const testDate = '2024-01-15T10:30:00.000Z';
+            const formatted = formatDate(testDate);
+            addTestResult('utilityTests', 'formatDate()', formatted.length > 0, formatted);
+            addTestResult('utilityTests', 'formatDate contains year', formatted.includes('2024'), formatted);
+        }
+
+        // DOM Elements Tests
+        function runDOMTests() {
+            clearTestResults('domTests');
+            
+            const elements = [
+                { id: 'fileInput', name: 'File Input' },
+                { id: 'folderInput', name: 'Folder Input' },
+                { id: 'uploadBtn', name: 'Upload Button' },
+                { id: 'uploadStatus', name: 'Upload Status' },
+                { id: 'fileList', name: 'File List' },
+                { id: 'folderFilter', name: 'Folder Filter' },
+                { id: 'refreshBtn', name: 'Refresh Button' }
+            ];
+
+            elements.forEach(el => {
+                const element = document.getElementById(el.id);
+                addTestResult('domTests', el.name, element !== null, element ? 'Found' : 'Not Found');
+            });
+        }
+
+        // Format Tests
+        function runFormatTests() {
+            clearTestResults('formatTests');
+            const { formatFileSize } = window.utils || { formatFileSize };
+
+            const testCases = [
+                { input: 0, expected: '0 Bytes' },
+                { input: 500, expected: '500 Bytes' },
+                { input: 1024, expected: '1 KB' },
+                { input: 2048, expected: '2 KB' },
+                { input: 1048576, expected: '1 MB' },
+                { input: 1073741824, expected: '1 GB' }
+            ];
+
+            testCases.forEach(test => {
+                const result = formatFileSize(test.input);
+                const passed = result === test.input + ' ' + test.expected.split(' ')[1] || result === test.expected;
+                addTestResult('formatTests', `${test.input} bytes`, passed, result);
+            });
+        }
+
+        // Mock API Tests
+        async function runAPITests() {
+            clearTestResults('apiTests');
+            
+            // Test API endpoints exist
+            const endpoints = ['/api/upload', '/api/files', '/api/folders'];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint, { method: 'GET' });
+                    addTestResult('apiTests', endpoint, response.status !== 404, `Status: ${response.status}`);
+                } catch (error) {
+                    addTestResult('apiTests', endpoint, false, error.message);
+                }
+            }
+        }
+
+        // Run All Tests
+        function runAllTests() {
+            clearTestResults('allTestsResults');
+            runUtilityTests();
+            runDOMTests();
+            runFormatTests();
+            runAPITests().then(() => {
+                addTestResult('allTestsResults', 'All Tests', true, 'Completed! Check individual test sections for details.');
+            });
+        }
+
+        // Interactive UI Test Handlers
+        document.getElementById('testUploadBtn').addEventListener('click', async () => {
+            const fileInput = document.getElementById('testFileInput');
+            const folderInput = document.getElementById('testFolderInput');
+            const status = document.getElementById('testUploadStatus');
+            
+            if (!fileInput.files[0]) {
+                status.textContent = 'Please select a file';
+                status.className = 'status-message error';
+                return;
+            }
+
+            status.textContent = 'Uploading...';
+            status.className = 'status-message';
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('folder', folderInput.value || 'test-uploads');
+            formData.append('fileName', fileInput.files[0].name);
+
+            try {
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                status.textContent = data.success ? `Success: ${data.url}` : `Error: ${data.error}`;
+                status.className = `status-message ${data.success ? 'success' : 'error'}`;
+            } catch (error) {
+                status.textContent = `Error: ${error.message}`;
+                status.className = 'status-message error';
+            }
+        });
+
+        document.getElementById('testRefreshBtn').addEventListener('click', async () => {
+            const folderFilter = document.getElementById('testFolderFilter');
+            const fileList = document.getElementById('testFileList');
+            
+            fileList.innerHTML = '<div class="loading">Loading files...</div>';
+
+            try {
+                const response = await fetch(`/api/files?folder=${encodeURIComponent(folderFilter.value || 'uploads')}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    if (data.files.length === 0) {
+                        fileList.innerHTML = `<div class="empty">No files found in folder: ${data.folder}</div>`;
+                    } else {
+                        const { formatFileSize, formatDate } = window.utils || { formatFileSize, formatDate };
+                        fileList.innerHTML = data.files.map(file => {
+                            const fileName = file.name.split('/').pop();
+                            return `
+                                <div class="file-item">
+                                    <div class="file-info">
+                                        <div class="file-name">${fileName}</div>
+                                        <div class="file-meta">
+                                            <span class="file-size">${formatFileSize(file.size)}</span>
+                                            <span class="file-date">${formatDate(file.lastModified)}</span>
+                                        </div>
+                                    </div>
+                                    <div class="file-actions">
+                                        <a href="${file.url}" target="_blank" class="btn-small btn-view">View</a>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                } else {
+                    fileList.innerHTML = `<div class="empty">Error: ${data.error}</div>`;
+                }
+            } catch (error) {
+                fileList.innerHTML = `<div class="empty">Error: ${error.message}</div>`;
+            }
+        });
+
+        // Expose utils to window for testing
+        window.utils = { formatFileSize, formatDate };
+    </script>
+</body>
+</html>
+
+
+
+
+
+

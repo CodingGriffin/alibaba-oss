@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alibaba Cloud OSS File Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📦 Alibaba Cloud OSS File Manager</h1>
+            <p class="subtitle">Bucket: <strong>everyusb-usky</strong></p>
+        </header>
+
+        <div class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <h2>Upload File</h2>
+                <div class="upload-form">
+                    <div class="form-group">
+                        <label for="folderInput">Folder Path:</label>
+                        <input type="text" id="folderInput" placeholder="e.g., documents, images/photos" value="uploads">
+                    </div>
+                    <div class="form-group">
+                        <label for="fileInput">Select File:</label>
+                        <input type="file" id="fileInput" class="file-input">
+                    </div>
+                    <button id="uploadBtn" class="btn btn-primary">
+                        <span class="btn-text">Upload File</span>
+                        <span class="btn-loader" style="display: none;">Uploading...</span>
+                    </button>
+                    <div id="uploadStatus" class="status-message"></div>
+                </div>
+            </section>
+
+            <!-- File Browser Section -->
+            <section class="browser-section">
+                <div class="browser-header">
+                    <h2>File Browser</h2>
+                    <div class="browser-controls">
+                        <div class="form-group-inline">
+                            <label for="folderFilter">Filter by Folder:</label>
+                            <input type="text" id="folderFilter" placeholder="e.g., uploads" value="uploads">
+                        </div>
+                        <button id="refreshBtn" class="btn btn-secondary">🔄 Refresh</button>
+                    </div>
+                </div>
+                <div id="fileList" class="file-list">
+                    <div class="loading">Loading files...</div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="utils.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
+
+
