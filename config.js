@@ -7,6 +7,9 @@ export default {
     accessKeyId: process.env.OSS_ACCESS_KEY_ID || 'LTAI5t8q5WU5fEDwnneBPM73',
     accessKeySecret: process.env.OSS_ACCESS_KEY_SECRET || 'access_key_secret',
     bucket: process.env.OSS_BUCKET || 'everyusb-usky',
-    endpoint: process.env.OSS_ENDPOINT || 'oss-cn-shenzhen.aliyuncs.com'
+    endpoint: process.env.OSS_ENDPOINT // Optional: specify custom endpoint
+  },
+  server: {
+    port: process.env.PORT || 3000
   }
 };
